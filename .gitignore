@@ -3,3 +3,6 @@
 
 # Cache files
 fp-info-cache
+
+# Backup files
+*-backups
