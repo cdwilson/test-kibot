@@ -6,3 +6,7 @@ fp-info-cache
 
 # Backup files
 *-backups
+
+# auto-generated exports
+/exports
+/*.xml
