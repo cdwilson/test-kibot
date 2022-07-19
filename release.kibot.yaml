@@ -3,6 +3,9 @@ kibot:
 
 global:
   out_dir: exports
+  filters:
+    - number: 58
+      regex: silk_over_copper
 
 preflight:
   # [boolean=false] Zones are filled before doing any operation involving PCB layers.
