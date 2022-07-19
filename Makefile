@@ -1,31 +1,31 @@
 KICAD_PROJECT_NAME=pic_programmer
-SCHEMATIC=$(KICAD_PROJECT_NAME).kicad_sch
-PCB=$(KICAD_PROJECT_NAME).kicad_pcb
+KICAD_SCHEMATIC=$(KICAD_PROJECT_NAME).kicad_sch
+KICAD_PCB=$(KICAD_PROJECT_NAME).kicad_pcb
 KIBOT_CFG=.kibot/release.kibot.yaml
-EXPORT_DIR=exports
+KIBOT_OUTPUT_DIR=exports
+KIBOT_DOCKER_CONTAINER_NAME=KiBot
 
 .PHONY: release
 
-# release:
-# 	kibot -e $(SCHEMATIC) -b $(PCB) -c $(KIBOT_CFG)
+all: release
 
 release:
 	docker run \
 		--rm \
 		-it \
-		--name="KiBot" \
+		--name="$(KIBOT_DOCKER_CONTAINER_NAME)" \
 		--env NO_AT_BRIDGE=1 \
 		--env INTERACTIVE_HTML_BOM_NO_DISPLAY=True \
 		--volume="$(shell pwd):/home/root/workdir" \
 		--workdir="/home/root/workdir" \
 		setsoft/kicad_auto_test:ki6 \
-		/bin/bash -c "kibot -e $(SCHEMATIC) -b $(PCB) -c $(KIBOT_CFG)"
+		/bin/bash -c "kibot -e $(KICAD_SCHEMATIC) -b $(KICAD_PCB) -c $(KIBOT_CFG)"
 
 docker-shell:
 	docker run \
 		--rm \
 		-it \
-		--name="KiBot" \
+		--name="$(KIBOT_DOCKER_CONTAINER_NAME)" \
 		--env NO_AT_BRIDGE=1 \
 		--env INTERACTIVE_HTML_BOM_NO_DISPLAY=True \
 		--volume="$(shell pwd):/home/root/workdir" \
@@ -35,4 +35,4 @@ docker-shell:
 
 clean:
 	rm -f $(KICAD_PROJECT_NAME).xml
-	rm -rf $(EXPORT_DIR)
+	rm -rf $(KIBOT_OUTPUT_DIR)
