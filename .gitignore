@@ -1,12 +1,42 @@
+.DS_Store
+*~
+
+# Visual Studio Code
+.vscode/
+
+# Python
+.python-version
+
+# Temporary files
+*.000
+*.bak
+*.bck
+_autosave-*
+*.tmp
+*-save.pro
+*-save.kicad_pcb
+fp-info-cache
+*-backups
+*-bak
+\#auto_saved_files\#
+
+# Netlist files (exported from Eeschema)
+*.net
+
+# Autorouter files (exported from Pcbnew)
+*.dsn
+*.ses
+
 # Project local settings
 *.kicad_prl
 
-# Cache files
-fp-info-cache
+# Exported BOM files
+*.xml
+*.csv
 
-# Backup files
-*-backups
+# Report files
+report.txt
 
-# auto-generated exports
-/exports
-/*.xml
+# KiBot generated files
+_*.kibot.yaml
+_build

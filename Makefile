@@ -1,38 +1,72 @@
 KICAD_PROJECT_NAME=pic_programmer
-KICAD_SCHEMATIC=$(KICAD_PROJECT_NAME).kicad_sch
-KICAD_PCB=$(KICAD_PROJECT_NAME).kicad_pcb
-KIBOT_CFG=.kibot/release.kibot.yaml
-KIBOT_OUTPUT_DIR=exports
+KICAD_PROJECT_FILE=$(KICAD_PROJECT_NAME).kicad_pro
+KICAD_SCHEMATIC_FILE=$(KICAD_PROJECT_NAME).kicad_sch
+KICAD_PCB_FILE=$(KICAD_PROJECT_NAME).kicad_pcb
+KIBOT_RELEASE_CFG_FILE=release.kibot.yaml
+KIBOT_OUTPUT_DIR=_build
 KIBOT_DOCKER_CONTAINER_NAME=KiBot
+KIBOT_DOCKER_IMAGE=setsoft/kicad_auto
+KIBOT_DOCKER_TAG=dev_k6
 
-.PHONY: release
+define kibot-docker-pull
+	docker pull "$(KIBOT_DOCKER_IMAGE):$(KIBOT_DOCKER_TAG)"
+endef
+
+define kibot-docker-run
+docker run \
+	--rm \
+	-it \
+	--name="$(KIBOT_DOCKER_CONTAINER_NAME)" \
+	--env NO_AT_BRIDGE=1 \
+	--env INTERACTIVE_HTML_BOM_NO_DISPLAY=True \
+	--volume="$(shell pwd):/home/root/workdir" \
+	--workdir="/home/root/workdir" \
+	"$(KIBOT_DOCKER_IMAGE):$(KIBOT_DOCKER_TAG)" \
+	/bin/bash
+endef
+
+define kibot-release
+	$(kibot-docker-pull)
+	$(kibot-docker-run) -c "kibot -e $(KICAD_SCHEMATIC_FILE) -b $(KICAD_PCB_FILE) -c $(KIBOT_RELEASE_CFG_FILE) -d $(KIBOT_OUTPUT_DIR); sync"
+	@# Restore the KiCad project file after it is modified by KiBot
+	@# See https://github.com/INTI-CMNB/KiBot/discussions/230
+	@echo Restoring $(KICAD_PROJECT_FILE) from Git
+	@git checkout $(KICAD_PROJECT_FILE)
+endef
+
+.PHONY: all release kibot-quick-start kibot-quick-start-dry kibot-example kibot-shell kibot-yaml tidy clean-kibot clean-backups clean-bom clean
 
 all: release
 
 release:
-	docker run \
-		--rm \
-		-it \
-		--name="$(KIBOT_DOCKER_CONTAINER_NAME)" \
-		--env NO_AT_BRIDGE=1 \
-		--env INTERACTIVE_HTML_BOM_NO_DISPLAY=True \
-		--volume="$(shell pwd):/home/root/workdir" \
-		--workdir="/home/root/workdir" \
-		setsoft/kicad_auto_test:ki6 \
-		/bin/bash -c "kibot -e $(KICAD_SCHEMATIC) -b $(KICAD_PCB) -c $(KIBOT_CFG)"
+	$(kibot-release)
 
-docker-shell:
-	docker run \
-		--rm \
-		-it \
-		--name="$(KIBOT_DOCKER_CONTAINER_NAME)" \
-		--env NO_AT_BRIDGE=1 \
-		--env INTERACTIVE_HTML_BOM_NO_DISPLAY=True \
-		--volume="$(shell pwd):/home/root/workdir" \
-		--workdir="/home/root/workdir" \
-		setsoft/kicad_auto_test:ki6 \
-		/bin/bash
+kibot-quick-start:
+	$(kibot-docker-run) -c "kibot --quick-start"
 
-clean:
-	rm -f $(KICAD_PROJECT_NAME).xml
-	rm -rf $(KIBOT_OUTPUT_DIR)
+kibot-quick-start-dry:
+	$(kibot-docker-run) -c "kibot --quick-start --dry"
+
+kibot-example:
+	$(kibot-docker-run) -c "kibot --example"
+
+kibot-shell:
+	$(kibot-docker-run)
+
+tidy:
+	-$(RM) .DS_Store *~
+
+clean-kibot:
+	-$(RM) -r $(KIBOT_OUTPUT_DIR)
+
+clean-backups:
+	-$(RM) -r *-backups
+	-$(RM) -r *-bak
+
+clean-bom:
+	-$(RM) $(KICAD_PROJECT_NAME).{xml,csv}
+
+clean: tidy clean-kibot clean-backups clean-bom
+	-$(RM) fp-info-cache
+	-$(RM) report.txt
+
