@@ -33,8 +33,17 @@ preflight:
   update_xml: true
 
 outputs:
-  - name: bom_csv
-    comment: Export the BOM to CSV
+  - name: bom_html_no_dnf_filter
+    comment: Export the BOM to HTML
+    type: bom
+    dir: BOM
+    options:
+      format: HTML
+      fit_field: BOM
+      ignore_dnf: true
+      output: "bom_no_dnf_filter.%x"
+  - name: bom_html_with_dnf_filter
+    comment: Export the BOM to HTML
     type: bom
     dir: BOM
     options:
@@ -42,4 +51,14 @@ outputs:
       fit_field: BOM
       ignore_dnf: true
       dnf_filter: _kibom_dnf_BOM
-
+      output: "bom_with_dnf_filter.%x"
+  - name: kibom_html_no_dnf_filter
+    comment: Export the BOM to HTML
+    type: kibom
+    dir: BOM
+    options:
+      format: HTML
+      conf:
+        fit_field: BOM
+        ignore_dnf: true
+      output: "kibom_no_dnf_filter.%x"
