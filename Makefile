@@ -28,10 +28,6 @@ endef
 define kibot-release
 	$(kibot-docker-pull)
 	$(kibot-docker-run) -c "kibot -e $(KICAD_SCHEMATIC_FILE) -b $(KICAD_PCB_FILE) -c $(KIBOT_RELEASE_CFG_FILE) -d $(KIBOT_OUTPUT_DIR); sync"
-	@# Restore the KiCad project file after it is modified by KiBot
-	@# See https://github.com/INTI-CMNB/KiBot/discussions/230
-	@echo Restoring $(KICAD_PROJECT_FILE) from Git
-	@git checkout $(KICAD_PROJECT_FILE)
 endef
 
 .PHONY: all release kibot-quick-start kibot-quick-start-dry kibot-example kibot-shell kibot-yaml tidy clean-kibot clean-backups clean-bom clean
