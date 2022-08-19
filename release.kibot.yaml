@@ -3,9 +3,7 @@ kibot:
 
 global:
   out_dir: exports
-  filters:
-    - number: 58
-      regex: silk_over_copper
+  restore_project: true
 
 preflight:
   # [boolean=false] Zones are filled before doing any operation involving PCB layers.
@@ -16,10 +14,6 @@ preflight:
   # [boolean=false] Fill all zones again and save the PCB.
   fill_zones: true
   # [list(dict)] A list of entries to filter out ERC/DRC messages.
-  filters:
-    - filter: 'Ignore silkscreen extending beyond the board edge on P3'
-      error: 'silk_over_copper'
-  # [boolean=false] Option for `run_drc`. Ignores the unconnected nets. Useful if you didn't finish the routing.
   ignore_unconnected: false
   # [boolean=false] Runs the DRC (Distance Rules Check). To ensure we have a valid PCB.
   # The report file name is controlled by the global output pattern (%i=drc %x=txt).
