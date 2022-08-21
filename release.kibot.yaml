@@ -5,6 +5,17 @@ global:
   out_dir: exports
   drc_exclusions_workaround: true
   restore_project: true
+  filters:
+    # KiBot docker image warnings
+    - number: 9
+      regex: "KiCad config without environment.vars section"
+    - number: 10
+      regex: "Unable to find KiCad 3D models"
+    - number: 58
+      regex: Missing KiCad main config file
+    # project-specific warnings
+    - number: 20
+      regex: "(no match in C3)"
 
 preflight:
   # [boolean=false] Zones are filled before doing any operation involving PCB layers.
