@@ -3,6 +3,7 @@ kibot:
 
 global:
   out_dir: exports
+  drc_exclusions_workaround: true
   restore_project: true
 
 preflight:
