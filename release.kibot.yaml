@@ -16,6 +16,15 @@ global:
     # project-specific warnings
     - number: 20
       regex: "(no match in C3)"
+  variant: test
+
+variants:
+  - name: test
+    comment: test variant
+    type: kibom
+    file_id: _test
+    variant: test
+    pre_transform: _var_rename
 
 preflight:
   # [boolean=false] Zones are filled before doing any operation involving PCB layers.
