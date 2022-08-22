@@ -68,3 +68,16 @@ outputs:
         fit_field: BOM
         ignore_dnf: true
       output: "kibom_no_dnf_filter.%x"
+  - name: user_drawings_gerber_x2
+    comment: Export user drawings in the Gerber X2 format
+    type: gerber
+    dir: Gerber
+    layers:
+      - Dwgs.User
+    options:
+      create_gerber_job_file: false
+      plot_sheet_reference: true
+      dnf_filter: _kibom_dnf_BOM
+      subtract_mask_from_silk: true
+      use_aux_axis_as_origin: true
+      output: "%f_%i.%x"
