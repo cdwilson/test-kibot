@@ -73,11 +73,19 @@ outputs:
     type: gerber
     dir: Gerber
     layers:
-      - Dwgs.User
+      - User.Drawings
     options:
-      create_gerber_job_file: false
       plot_sheet_reference: true
       dnf_filter: _kibom_dnf_BOM
-      subtract_mask_from_silk: true
-      use_aux_axis_as_origin: true
+      output: "%f_%i.%x"
+  - name: user_drawings_pdf
+    comment: Export user drawings in PDF format
+    type: pcb_print
+    dir: PDF
+    options:
+      plot_sheet_reference: true
+      dnf_filter: _kibom_dnf_BOM
+      pages:
+        - layers:
+            - layer: User.Drawings
       output: "%f_%i.%x"
