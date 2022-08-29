@@ -37,6 +37,9 @@ preflight:
   # To ensure our generated BoM is up to date.
   # Note that this isn't needed when using the internal BoM generator (`bom`).
   update_xml: true
+  set_text_variables:
+    - name: OPTIONAL_VARIABLE
+      text: ""
 
 outputs:
   - name: bom_html_no_dnf_filter
