@@ -16,6 +16,7 @@ define kibot-docker-run
 docker run \
 	--rm \
 	-it \
+	--platform linux/amd64 \
 	--name="$(KIBOT_DOCKER_CONTAINER_NAME)" \
 	--env NO_AT_BRIDGE=1 \
 	--env INTERACTIVE_HTML_BOM_NO_DISPLAY=True \
