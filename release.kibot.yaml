@@ -37,34 +37,52 @@ preflight:
   # To ensure our generated BoM is up to date.
   # Note that this isn't needed when using the internal BoM generator (`bom`).
   update_xml: true
+  set_text_variables:
+    - name: CUSTOM_VAR
+      text: My Custom Variable
 
 outputs:
-  - name: bom_html_no_dnf_filter
-    comment: Export the BOM to HTML
-    type: bom
-    dir: BOM
+  # - name: bom_html_no_dnf_filter
+  #   comment: Export the BOM to HTML
+  #   type: bom
+  #   dir: BOM
+  #   options:
+  #     format: HTML
+  #     fit_field: BOM
+  #     ignore_dnf: true
+  #     output: "bom_no_dnf_filter.%x"
+  # - name: bom_html_with_dnf_filter
+  #   comment: Export the BOM to HTML
+  #   type: bom
+  #   dir: BOM
+  #   options:
+  #     format: HTML
+  #     fit_field: BOM
+  #     ignore_dnf: true
+  #     dnf_filter: _kibom_dnf_BOM
+  #     output: "bom_with_dnf_filter.%x"
+  # - name: kibom_html_no_dnf_filter
+  #   comment: Export the BOM to HTML
+  #   type: kibom
+  #   dir: BOM
+  #   options:
+  #     format: HTML
+  #     conf:
+  #       fit_field: BOM
+  #       ignore_dnf: true
+  #     output: "kibom_no_dnf_filter.%x"
+  - name: fab_drawing_pdf
+    comment: Export the fabrication drawing in PDF format
+    type: pcb_print
+    dir: PDF
     options:
-      format: HTML
-      fit_field: BOM
-      ignore_dnf: true
-      output: "bom_no_dnf_filter.%x"
-  - name: bom_html_with_dnf_filter
-    comment: Export the BOM to HTML
-    type: bom
-    dir: BOM
-    options:
-      format: HTML
-      fit_field: BOM
-      ignore_dnf: true
-      dnf_filter: _kibom_dnf_BOM
-      output: "bom_with_dnf_filter.%x"
-  - name: kibom_html_no_dnf_filter
-    comment: Export the BOM to HTML
-    type: kibom
-    dir: BOM
-    options:
-      format: HTML
-      conf:
-        fit_field: BOM
-        ignore_dnf: true
-      output: "kibom_no_dnf_filter.%x"
+      plot_sheet_reference: true
+      pages:
+        - layers:
+            - layer: User.Drawings
+              color: "#000000"
+            - layer: F.Fab
+              color: "#000000"
+          sheet_reference_color: "#000000"
+          sheet: PCB Fabrication Drawing
+      output: "fab_drawing.%x"
