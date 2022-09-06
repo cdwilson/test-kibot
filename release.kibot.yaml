@@ -27,5 +27,9 @@ outputs:
       pages:
         - layers:
             - layer: F.Cu
-              color: "#000000"
               suffix: foo
+        - layers:
+            - layer: F.Cu
+              suffix: bar
+            - layer: Edge.Cuts
+              suffix: baz
