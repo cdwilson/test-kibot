@@ -17,54 +17,15 @@ global:
     - number: 20
       regex: "(no match in C3)"
 
-preflight:
-  # [boolean=false] Zones are filled before doing any operation involving PCB layers.
-  # The original PCB remains unchanged.
-  check_zone_fills: true
-  # [boolean=false] Option for `run_erc`. ERC warnings are considered errors.
-  erc_warnings: false
-  # [boolean=false] Fill all zones again and save the PCB.
-  fill_zones: true
-  # [list(dict)] A list of entries to filter out ERC/DRC messages.
-  ignore_unconnected: false
-  # [boolean=false] Runs the DRC (Distance Rules Check). To ensure we have a valid PCB.
-  # The report file name is controlled by the global output pattern (%i=drc %x=txt).
-  run_drc: true
-  # [boolean=false] Runs the ERC (Electrical Rules Check). To ensure the schematic is electrically correct.
-  # The report file name is controlled by the global output pattern (%i=erc %x=txt).
-  run_erc: true
-  # [boolean=false] Update the XML version of the BoM (Bill of Materials).
-  # To ensure our generated BoM is up to date.
-  # Note that this isn't needed when using the internal BoM generator (`bom`).
-  update_xml: true
-
 outputs:
-  - name: bom_html_no_dnf_filter
-    comment: Export the BOM to HTML
-    type: bom
-    dir: BOM
+  - name: plot_png
+    comment: Export PCB plots in PNG format
+    type: pcb_print
+    dir: PNG
     options:
-      format: HTML
-      fit_field: BOM
-      ignore_dnf: true
-      output: "bom_no_dnf_filter.%x"
-  - name: bom_html_with_dnf_filter
-    comment: Export the BOM to HTML
-    type: bom
-    dir: BOM
-    options:
-      format: HTML
-      fit_field: BOM
-      ignore_dnf: true
-      dnf_filter: _kibom_dnf_BOM
-      output: "bom_with_dnf_filter.%x"
-  - name: kibom_html_no_dnf_filter
-    comment: Export the BOM to HTML
-    type: kibom
-    dir: BOM
-    options:
-      format: HTML
-      conf:
-        fit_field: BOM
-        ignore_dnf: true
-      output: "kibom_no_dnf_filter.%x"
+      format: PNG
+      pages:
+        - layers:
+            - layer: F.Cu
+              color: "#000000"
+              suffix: foo
