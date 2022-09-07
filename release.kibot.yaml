@@ -20,33 +20,113 @@ global:
     - number: 20
       regex: "(no match in C3)"
 
-preflight:
-  # [boolean=false] Zones are filled before doing any operation involving PCB layers.
-  # The original PCB remains unchanged.
-  check_zone_fills: false
-  # [boolean=false] Option for `run_erc`. ERC warnings are considered errors.
-  erc_warnings: false
-  # [boolean=false] Fill all zones again and save the PCB.
-  fill_zones: true
-  # [list(dict)] A list of entries to filter out ERC/DRC messages.
-  ignore_unconnected: false
-  # [boolean=false] Runs the DRC (Distance Rules Check). To ensure we have a valid PCB.
-  # The report file name is controlled by the global output pattern (%i=drc %x=txt).
-  run_drc: false
-  # [boolean=false] Runs the ERC (Electrical Rules Check). To ensure the schematic is electrically correct.
-  # The report file name is controlled by the global output pattern (%i=erc %x=txt).
-  run_erc: false
-  # [boolean=false] Update the XML version of the BoM (Bill of Materials).
-  # To ensure our generated BoM is up to date.
-  # Note that this isn't needed when using the internal BoM generator (`bom`).
-  update_xml: false
-
 outputs:
-  - name: schematic_pdf
-    comment: Export the schematic to PDF
-    type: pdf_sch_print
-    dir: Schematic
+  - name: plot_pdf
+    comment: Export the PCB plots in PDF format
+    type: pcb_print
+    dir: PDF
     options:
-      frame: true
-      all_pages: true
-      monochrome: false
+      <<: &pcb_print_options
+        add_background: true
+        background_color: "#FFFFFF"
+        colored_pads: false
+        colored_vias: false
+        force_edge_cuts: true
+        forced_edge_cuts_color: "#ff0000"
+        output: plot_pdf.pdf
+        pages:
+          # - layers:
+          #     - layer: F.Cu
+          #       color: "#000000"
+          #   colored_holes: true
+          #   holes_color: "#FFFFFF"
+          #   sheet: Primary (Top) Copper
+          #   sheet_reference_color: "#000000"
+          # - layers:
+          #     - layer: B.Cu
+          #       color: "#000000"
+          #   colored_holes: true
+          #   holes_color: "#FFFFFF"
+          #   sheet: Secondary (Bottom) Copper
+          #   sheet_reference_color: "#000000"
+          - layers:
+              - layer: F.Mask
+                color: "#000000"
+            colored_holes: true
+            holes_color: "#FFFFFF"
+            sheet: Primary (Top) Soldermask
+            sheet_reference_color: "#000000"
+          - layers:
+              - layer: B.Mask
+                color: "#000000"
+            colored_holes: true
+            holes_color: "#FFFFFF"
+            sheet: Secondary (Bottom) Soldermask
+            sheet_reference_color: "#000000"
+          # - layers:
+          #     - layer: F.Silkscreen
+          #       color: "#000000"
+          #   colored_holes: true
+          #   holes_color: "#FFFFFF"
+          #   sheet: Primary (Top) Silkscreen
+          #   sheet_reference_color: "#000000"
+          # - layers:
+          #     - layer: B.Silkscreen
+          #       color: "#000000"
+          #   colored_holes: true
+          #   holes_color: "#FFFFFF"
+          #   sheet: Secondary (Bottom) Silkscreen
+          #   sheet_reference_color: "#000000"
+          # - layers:
+          #     - layer: Edge.Cuts
+          #       color: "#000000"
+          #   colored_holes: true
+          #   holes_color: "#FFFFFF"
+          #   sheet: PCB Profile (Outline)
+          #   sheet_reference_color: "#000000"
+  - name: plot_pdf_no_realistic_soldermask
+    comment: Export the PCB plots in PDF format
+    type: pcb_print
+    dir: PDF
+    options:
+      <<: *pcb_print_options
+      realistic_solder_mask: false
+      output: plot_pdf_no_realistic_soldermask.pdf
+  - name: plot_svg
+    comment: Export the PCB plots in SVG format
+    type: pcb_print
+    dir: SVG
+    options:
+      <<: *pcb_print_options
+      format: SVG
+      output: "plot_svg_%i.%x"
+  - name: plot_svg_no_realistic_soldermask
+    comment: Export the PCB plots in SVG format
+    type: pcb_print
+    dir: SVG
+    options:
+      <<: *pcb_print_options
+      format: SVG
+      realistic_solder_mask: false
+      output: "plot_svg_no_realistic_soldermask_%i.%x"
+  - name: plot_png
+    comment: Export the PCB plots in PNG format
+    type: pcb_print
+    dir: PNG
+    options:
+      <<: *pcb_print_options
+      format: PNG
+      # dpi: 1200
+      # png_width: 0
+      output: "plot_png_%i.%x"
+  - name: plot_png_no_realistic_soldermask
+    comment: Export the PCB plots in PNG format
+    type: pcb_print
+    dir: PNG
+    options:
+      <<: *pcb_print_options
+      format: PNG
+      # dpi: 1200
+      # png_width: 0
+      realistic_solder_mask: false
+      output: "plot_png_no_realistic_soldermask_%i.%x"
