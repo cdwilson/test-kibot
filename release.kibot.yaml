@@ -34,6 +34,7 @@ outputs:
         force_edge_cuts: true
         forced_edge_cuts_color: "#ff0000"
         output: plot_pdf.pdf
+        page_number_as_extension: true
         pages:
           # - layers:
           #     - layer: F.Cu
@@ -56,6 +57,7 @@ outputs:
             holes_color: "#FFFFFF"
             sheet: Primary (Top) Soldermask
             sheet_reference_color: "#000000"
+            page_id: F_Mask
           - layers:
               - layer: B.Mask
                 color: "#000000"
@@ -63,6 +65,7 @@ outputs:
             holes_color: "#FFFFFF"
             sheet: Secondary (Bottom) Soldermask
             sheet_reference_color: "#000000"
+            page_id: B_Mask
           # - layers:
           #     - layer: F.Silkscreen
           #       color: "#000000"
@@ -84,14 +87,6 @@ outputs:
           #   holes_color: "#FFFFFF"
           #   sheet: PCB Profile (Outline)
           #   sheet_reference_color: "#000000"
-  - name: plot_pdf_no_realistic_soldermask
-    comment: Export the PCB plots in PDF format
-    type: pcb_print
-    dir: PDF
-    options:
-      <<: *pcb_print_options
-      realistic_solder_mask: false
-      output: plot_pdf_no_realistic_soldermask.pdf
   - name: plot_svg
     comment: Export the PCB plots in SVG format
     type: pcb_print
@@ -99,16 +94,7 @@ outputs:
     options:
       <<: *pcb_print_options
       format: SVG
-      output: "plot_svg_%i.%x"
-  - name: plot_svg_no_realistic_soldermask
-    comment: Export the PCB plots in SVG format
-    type: pcb_print
-    dir: SVG
-    options:
-      <<: *pcb_print_options
-      format: SVG
-      realistic_solder_mask: false
-      output: "plot_svg_no_realistic_soldermask_%i.%x"
+      output: "plot_svg_%x"
   - name: plot_png
     comment: Export the PCB plots in PNG format
     type: pcb_print
@@ -117,16 +103,5 @@ outputs:
       <<: *pcb_print_options
       format: PNG
       # dpi: 1200
-      # png_width: 0
-      output: "plot_png_%i.%x"
-  - name: plot_png_no_realistic_soldermask
-    comment: Export the PCB plots in PNG format
-    type: pcb_print
-    dir: PNG
-    options:
-      <<: *pcb_print_options
-      format: PNG
-      # dpi: 1200
-      # png_width: 0
-      realistic_solder_mask: false
-      output: "plot_png_no_realistic_soldermask_%i.%x"
+      png_width: 0
+      output: "plot_png_%x"
