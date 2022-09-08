@@ -42,11 +42,24 @@ preflight:
   update_xml: false
 
 outputs:
-  - name: schematic_pdf
-    comment: Export the schematic to PDF
-    type: pdf_sch_print
-    dir: Schematic
+  - name: netlist_ipc
+    comment: Export the netlist in IPC-D-356 format
+    type: netlist
+    dir: Netlist
     options:
-      frame: true
-      all_pages: true
-      monochrome: false
+      format: ipc
+  - name: netlist_kicad
+    comment: Export the netlist in KiCad format
+    type: netlist
+    dir: Netlist
+  - name: zip
+    comment: Export the zip file
+    type: compress
+    dir: Zip
+    options:
+      format: ZIP
+      files:
+        - from_output: netlist_ipc
+          dest: /
+        - from_output: netlist_kicad
+          dest: /
