@@ -23,23 +23,23 @@ global:
 preflight:
   # [boolean=false] Zones are filled before doing any operation involving PCB layers.
   # The original PCB remains unchanged.
-  check_zone_fills: false
+  check_zone_fills: true
   # [boolean=false] Option for `run_erc`. ERC warnings are considered errors.
-  erc_warnings: false
+  erc_warnings: true
   # [boolean=false] Fill all zones again and save the PCB.
   fill_zones: true
   # [list(dict)] A list of entries to filter out ERC/DRC messages.
   ignore_unconnected: false
   # [boolean=false] Runs the DRC (Distance Rules Check). To ensure we have a valid PCB.
   # The report file name is controlled by the global output pattern (%i=drc %x=txt).
-  run_drc: false
+  run_drc: true
   # [boolean=false] Runs the ERC (Electrical Rules Check). To ensure the schematic is electrically correct.
   # The report file name is controlled by the global output pattern (%i=erc %x=txt).
-  run_erc: false
+  run_erc: true
   # [boolean=false] Update the XML version of the BoM (Bill of Materials).
   # To ensure our generated BoM is up to date.
   # Note that this isn't needed when using the internal BoM generator (`bom`).
-  update_xml: false
+  update_xml: true
 
 outputs:
   - name: schematic_pdf
