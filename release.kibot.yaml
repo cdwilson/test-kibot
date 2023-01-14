@@ -20,88 +20,14 @@ global:
     - number: 20
       regex: "(no match in C3)"
 
+preflight:
+  update_xml: true
+
 outputs:
-  - name: plot_pdf
-    comment: Export the PCB plots in PDF format
-    type: pcb_print
-    dir: PDF
+  - name: schematic_pdf
+    comment: Export the PCB assembly schematic in PDF format
+    type: pdf_sch_print
     options:
-      <<: &pcb_print_options
-        add_background: true
-        background_color: "#FFFFFF"
-        colored_pads: false
-        colored_vias: false
-        force_edge_cuts: true
-        forced_edge_cuts_color: "#ff0000"
-        output: plot_pdf.pdf
-        page_number_as_extension: true
-        pages:
-          # - layers:
-          #     - layer: F.Cu
-          #       color: "#000000"
-          #   colored_holes: true
-          #   holes_color: "#FFFFFF"
-          #   sheet: Primary (Top) Copper
-          #   sheet_reference_color: "#000000"
-          # - layers:
-          #     - layer: B.Cu
-          #       color: "#000000"
-          #   colored_holes: true
-          #   holes_color: "#FFFFFF"
-          #   sheet: Secondary (Bottom) Copper
-          #   sheet_reference_color: "#000000"
-          - layers:
-              - layer: F.Mask
-                color: "#000000"
-            colored_holes: true
-            holes_color: "#FFFFFF"
-            sheet: Primary (Top) Soldermask
-            sheet_reference_color: "#000000"
-            page_id: F_Mask
-          - layers:
-              - layer: B.Mask
-                color: "#000000"
-            colored_holes: true
-            holes_color: "#FFFFFF"
-            sheet: Secondary (Bottom) Soldermask
-            sheet_reference_color: "#000000"
-            page_id: B_Mask
-          # - layers:
-          #     - layer: F.Silkscreen
-          #       color: "#000000"
-          #   colored_holes: true
-          #   holes_color: "#FFFFFF"
-          #   sheet: Primary (Top) Silkscreen
-          #   sheet_reference_color: "#000000"
-          # - layers:
-          #     - layer: B.Silkscreen
-          #       color: "#000000"
-          #   colored_holes: true
-          #   holes_color: "#FFFFFF"
-          #   sheet: Secondary (Bottom) Silkscreen
-          #   sheet_reference_color: "#000000"
-          # - layers:
-          #     - layer: Edge.Cuts
-          #       color: "#000000"
-          #   colored_holes: true
-          #   holes_color: "#FFFFFF"
-          #   sheet: PCB Profile (Outline)
-          #   sheet_reference_color: "#000000"
-  - name: plot_svg
-    comment: Export the PCB plots in SVG format
-    type: pcb_print
-    dir: SVG
-    options:
-      <<: *pcb_print_options
-      format: SVG
-      output: "plot_svg_%x"
-  - name: plot_png
-    comment: Export the PCB plots in PNG format
-    type: pcb_print
-    dir: PNG
-    options:
-      <<: *pcb_print_options
-      format: PNG
-      # dpi: 1200
-      png_width: 0
-      output: "plot_png_%x"
+      frame: true
+      all_pages: true
+      monochrome: false

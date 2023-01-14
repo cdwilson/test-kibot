@@ -27,11 +27,10 @@ docker run \
 endef
 
 define kibot-release
-	$(kibot-docker-pull)
-	$(kibot-docker-run) -c "kibot -e $(KICAD_SCHEMATIC_FILE) -b $(KICAD_PCB_FILE) -c $(KIBOT_RELEASE_CFG_FILE) -d $(KIBOT_OUTPUT_DIR); sync"
+	$(kibot-docker-run) -c "kibot -vvv -e $(KICAD_SCHEMATIC_FILE) -b $(KICAD_PCB_FILE) -c $(KIBOT_RELEASE_CFG_FILE) -d $(KIBOT_OUTPUT_DIR); sync"
 endef
 
-.PHONY: all release kibot-quick-start kibot-quick-start-dry kibot-example kibot-shell kibot-yaml tidy clean-kibot clean-backups clean-bom clean
+.PHONY: all release kibot-quick-start kibot-quick-start-dry kibot-example kibot-shell kibot-update tidy clean-kibot clean-backups clean-bom clean
 
 all: release
 
@@ -49,6 +48,9 @@ kibot-example:
 
 kibot-shell:
 	$(kibot-docker-run)
+	
+kibot-update:
+	$(kibot-docker-pull)
 
 tidy:
 	-$(RM) .DS_Store *~
